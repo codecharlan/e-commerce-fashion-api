@@ -1,0 +1,53 @@
+Fashion Blog (API)
+
+Dele is a fashion designer who needs an online platform in the form of a blog where he can post his various categories
+of designs, and get feedback and thoughts from his customers and blog visitors via comments and likes. You are to build
+Restful APIs which would be consumed by a client application.
+
+Tools
+
+· Spring Boot
+
+· PostgreSQL
+
+· Git
+
+· Spring Data JPA
+
+· JUnit/Mockito
+
+Expectations
+
+· Ensure your code is DRY.
+
+· Make sure your endpoints follow correct REST Api patterns.
+
+· Basic OOP should be used.
+
+· Apply various optimizations where necessary (e.g. pagination).
+
+· Efficient SQL custom queries should be used where needed.
+
+· Exception Handling
+
+· Custom response structure both on success and failure
+
+· Implement searching for blog post title and comment.
+
+· All parts of your code should be tested
+
+· Database design should be normalized and entities should have the necessary relationship mapping
+
+· Add timestamp to your tables where necessary
+
+Assessment Criteria
+
+1. Codebase is fully tested.
+
+2. All SQL queries are efficient
+
+3. Efficient table mappings
+
+4. Defined response format
+
+5. The codebase is clean and 100% DRY.

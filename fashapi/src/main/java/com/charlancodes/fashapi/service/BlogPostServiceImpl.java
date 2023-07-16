@@ -2,17 +2,24 @@ package com.charlancodes.fashapi.service;
 
 import com.charlancodes.fashapi.entity.Admin;
 import com.charlancodes.fashapi.entity.BlogPost;
+import com.charlancodes.fashapi.entity.BlogPostImage;
 import com.charlancodes.fashapi.exception.CustomAppException;
+import com.charlancodes.fashapi.exception.ResourceAlreadyAvailableException;
 import com.charlancodes.fashapi.exception.ResourceNotExistException;
 import com.charlancodes.fashapi.model.PageCriterias.PostPage;
 import com.charlancodes.fashapi.repository.AdminRepo;
 import com.charlancodes.fashapi.repository.BlogPostRepo;
+import com.charlancodes.fashapi.repository.ProductImageRepo;
+import com.charlancodes.fashapi.utils.ImageUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -20,10 +27,12 @@ import java.util.Optional;
 public class BlogPostServiceImpl implements BlogPostService{
     private final AdminRepo adminRepo;
     private final BlogPostRepo blogPostRepo;
+    private final ProductImageRepo imageRepo;
 
-    public BlogPostServiceImpl(AdminRepo adminRepo, BlogPostRepo blogPostRepo) {
+    public BlogPostServiceImpl(AdminRepo adminRepo, BlogPostRepo blogPostRepo, ProductImageRepo imageRepo) {
         this.adminRepo = adminRepo;
         this.blogPostRepo = blogPostRepo;
+        this.imageRepo = imageRepo;
     }
 
     @Override
@@ -35,10 +44,27 @@ public class BlogPostServiceImpl implements BlogPostService{
         newBlogPost.setDescription(blogPost.getDescription());
         newBlogPost.setCategory(blogPost.getCategory());
         newBlogPost.setPrice(blogPost.getPrice());
-        newBlogPost.setImage(blogPost.getImage());
         newBlogPost.setAdmin(adminchk);
         blogPostRepo.save(newBlogPost);
         return newBlogPost;
+    }
+    @Override
+    public BlogPostImage addProductImage(MultipartFile file, Long blogId, Long id) throws IOException {
+        Admin adminchk = adminRepo.findById(id).
+                orElseThrow(()-> new ResourceNotExistException("Admin does not exist"));
+        Optional<BlogPost> checkIfImageExist = Optional.ofNullable(blogPostRepo.findByAdminAndBlogPostImageIsNull(adminchk)
+                .orElseThrow(() -> new ResourceAlreadyAvailableException("Image Already Available")));
+        Optional<BlogPost> findBlogPost = blogPostRepo.findById(blogId);
+        if(findBlogPost.isPresent()){
+
+            imageRepo.save(BlogPostImage.builder()
+                    .name(file.getOriginalFilename())
+                    .type(file.getContentType())
+                    .blogPost(findBlogPost.get())
+                    .image(ImageUtils.compressImage(file.getBytes())).build());
+        }
+        return new BlogPostImage("Product Image uploaded successfully: " +
+                file.getOriginalFilename());
     }
     @Override
     public BlogPost updateBlogPost(BlogPost blogPost, Long id, Long blogId) {
@@ -52,7 +78,6 @@ public class BlogPostServiceImpl implements BlogPostService{
             newBlogPost.setDescription(blogPost.getDescription());
             newBlogPost.setCategory(blogPost.getCategory());
             newBlogPost.setPrice(blogPost.getPrice());
-            newBlogPost.setImage(blogPost.getImage());
             newBlogPost.setAdmin(adminchk);
             blogPostRepo.save(newBlogPost);
         }else throw new ResourceNotExistException("ITEM is no longer AVAILABLE");

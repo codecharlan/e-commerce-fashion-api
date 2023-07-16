@@ -1,7 +1,6 @@
 package com.charlancodes.fashapi.entity;
 
 import com.charlancodes.fashapi.enums.Category;
-import com.charlancodes.fashapi.enums.Role;
 import com.charlancodes.fashapi.model.BaseIdClass;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -22,9 +21,6 @@ public class BlogPost extends BaseIdClass {
     private String title;
     private String description;
     private String price;
-    @Column(nullable = false)
-    @Lob
-    private String image;
     @Enumerated(EnumType.STRING)
     private Category category;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,6 +33,10 @@ public class BlogPost extends BaseIdClass {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "blogPost")
     private List<Like> likes;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "blogPost")
+    private BlogPostImage blogPostImage;
 
 }
 

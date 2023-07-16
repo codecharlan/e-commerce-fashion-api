@@ -28,13 +28,13 @@ public class CostumerController {
     }
 
 
-    @PostMapping("create_user")
+    @PostMapping("/create_user")
     public ResponseEntity<?> createCustomerRole(@Valid @RequestBody PersonDto personDto) {
         PersonResponseDto user = userService.CreateNewCustomer(personDto);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping("user_login")
+    @PostMapping("/user_login")
     public ResponseEntity<?> customerLogin(@Valid @RequestBody PersonLoginDto personLoginDto) {
         PersonLoginResponse customer = userService.customerLogin(personLoginDto.getEmail(), personLoginDto.getPassword());
         httpSession.setAttribute("user_id", customer.getId());

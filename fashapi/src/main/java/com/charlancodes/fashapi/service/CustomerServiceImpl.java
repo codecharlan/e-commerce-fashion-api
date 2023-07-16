@@ -49,4 +49,5 @@ public class CustomerServiceImpl implements CustomerService {
         ModelMapperUtils.map(customerchk, personLoginResponse);
         return personLoginResponse;
     }
+
 }

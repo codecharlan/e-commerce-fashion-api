@@ -7,6 +7,7 @@ import com.charlancodes.fashapi.entity.Customer;
 import com.charlancodes.fashapi.exception.ResourceAlreadyAvailableException;
 import com.charlancodes.fashapi.exception.ResourceNotExistException;
 import com.charlancodes.fashapi.model.PageCriterias.CommentPage;
+import com.charlancodes.fashapi.model.PageCriterias.PostPage;
 import com.charlancodes.fashapi.repository.BlogPostRepo;
 import com.charlancodes.fashapi.repository.CommentRepo;
 import com.charlancodes.fashapi.repository.CustomerRepo;

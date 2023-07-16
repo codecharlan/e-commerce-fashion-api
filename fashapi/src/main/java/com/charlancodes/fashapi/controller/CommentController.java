@@ -29,19 +29,19 @@ public class CommentController {
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
-    @PutMapping("edit_comment/{id}")
+    @PutMapping("/edit_comment/{id}")
     public ResponseEntity<?> editComment(@RequestBody CommentDto commentDto, @PathVariable String id) {
         Comment comment = commentService.editComment(commentDto, Long.parseLong(id), (Long) httpSession.getAttribute("user_id"));
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
-    @DeleteMapping("delete_comment/{id}")
+    @DeleteMapping("/delete_comment/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable String id) {
         commentService.deleteComment(Long.parseLong(id), (Long) httpSession.getAttribute("user_id"));
         return new ResponseEntity<>("Comment Deleted Successfully", HttpStatus.OK);
     }
 
-    @GetMapping("view_allcomments")
+    @GetMapping("/view_allcomments")
     public ResponseEntity<?> viewAllComments(@RequestBody CommentPage commentPage) {
         Page<Comment> comment = commentService.viewAllComments(commentPage, (Long) httpSession.getAttribute("user_id"));
         return new ResponseEntity<>(comment, HttpStatus.OK);

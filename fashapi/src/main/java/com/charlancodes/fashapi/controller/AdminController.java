@@ -27,13 +27,13 @@ public class AdminController {
     }
 
 
-    @PostMapping("create_admin")
+    @PostMapping("/create_admin")
     public ResponseEntity<?> createAdminRole(@Valid @RequestBody PersonDto personDto) {
         PersonResponseDto admin = adminService.CreateNewAdmin(personDto);
         return new ResponseEntity<>(admin, HttpStatus.OK);
     }
 
-    @PostMapping("admin_login")
+    @PostMapping("/admin_login")
     public ResponseEntity<?> adminLogin(@Valid @RequestBody PersonLoginDto personLoginDto) {
         PersonLoginResponse admin = adminService.adminLogin(personLoginDto.getEmail(), personLoginDto.getPassword());
         httpSession.setAttribute("admin_id", admin.getId());
